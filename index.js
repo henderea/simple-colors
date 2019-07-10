@@ -1,21 +1,18 @@
 const _uniq = require('lodash/uniq');
-const _map = require('lodash/map');
-const _filter = require('lodash/filter');
 const _flatten = require('lodash/flatten');
-const _isFunction = require('lodash/isFunction');
-const _isPlainObject = require('lodash/isPlainObject');
-const _isNumber = require('lodash/isNumber');
-const _isString = require('lodash/isString');
+const _isFunc = require('lodash/isFunction');
+const _isObj = require('lodash/isPlainObject');
+const _isNum = require('lodash/isNumber');
+const _isStr = require('lodash/isString');
 
-const _isNumberOrString = v => _isNumber(v) || _isString(v);
+const _isNumOrStr = v => _isNum(v) || _isStr(v);
 
 const style = (...sty) => {
-    sty = _map(sty, s => (_isFunction(s) && s.sty) ? s.sty : s);
-    sty = _flatten(sty);
-    sty = _filter(sty, s => _isPlainObject(s) && _isNumberOrString(s.open) && _isNumberOrString(s.close));
-    sty = _uniq(sty);
-    let func = function(str) { return `\u001B[${_map(sty, 'open').join(';')}m${str}\u001B[${_map(sty, 'close').join(';')}m`; }
-    func.sty = sty;
+    sty = _uniq(_flatten(sty.map(s => (_isFunc(s) && s._s) ? s._s : s)).filter(s => _isObj(s) && _isNumOrStr(s.o) && _isNumOrStr(s.c)));
+    let o = _uniq(sty.map(s => s.o)).join(';');
+    let c = _uniq(sty.map(s => s.c)).join(';');
+    let func = function(str) { return `\u001B[${o}m${str}\u001B[${c}m`; }
+    func._s = sty;
     return func;
 }
 
@@ -25,7 +22,7 @@ const bright = (normal, bright) => {
     return sty;
 }
 
-const p = (open, close) => ({open, close});
+const p = (o, c) => ({ o, c });
 const styles = {
     bold: style(p(1, 22)),
     dim: style(p(2, 22)),
