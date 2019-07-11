@@ -152,7 +152,7 @@ class HelpTextMaker {
 
     toString(wrap = -1) {
         if(this._wrap) {
-            if(process.stdout.isTTY && wrap <= 0) {
+            if(process.stdout.isTTY && wrap <= 0 || wrap > process.stdout.columns) {
                 wrap = process.stdout.columns;
             }
         } else {
