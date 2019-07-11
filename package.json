@@ -7,9 +7,11 @@
   "author": "Eric Henderson <henderea@gmail.com>",
   "license": "MIT",
   "files": [
-    "index.js"
+    "index.js",
+    "helpText.js"
   ],
   "dependencies": {
-    "lodash": "^4.17.14"
+    "lodash": "^4.17.14",
+    "strip-ansi": "^5.2.0"
   }
 }
