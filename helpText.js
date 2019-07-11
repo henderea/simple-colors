@@ -192,5 +192,7 @@ class HelpTextMaker {
 }
 
 module.exports = {
-    HelpTextMaker
+    HelpTextMaker,
+    style,
+    styles
 };
