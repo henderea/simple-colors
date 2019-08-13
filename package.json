@@ -11,7 +11,7 @@
     "helpText.js"
   ],
   "dependencies": {
-    "lodash": "^4.17.14",
+    "lodash": "^4.17.15",
     "strip-ansi": "^5.2.0"
   }
 }
