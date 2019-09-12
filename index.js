@@ -16,9 +16,10 @@ const style = (...sty) => {
     return func;
 }
 
-const bright = (normal, bright) => {
+const brightBg = (normal, bright, bg) => {
     let sty = style(normal);
     sty.bright = style(bright);
+    sty.bg = style(bg);
     return sty;
 }
 
@@ -28,14 +29,14 @@ const styles = {
     dim: style(p(2, 22)),
     italic: style(p(3, 23)),
     underline: style(p(4, 24)),
-    black: bright(p(30, 39), p(90, 39)),
-    red: bright(p(31, 39), p(91, 39)),
-    green: bright(p(32, 39), p(92, 39)),
-    yellow: bright(p(33, 39), p(93, 39)),
-    blue: bright(p(34, 39), p(94, 39)),
-    magenta: bright(p(35, 39), p(95, 39)),
-    cyan: bright(p(36, 39), p(96, 39)),
-    white: bright(p(37, 39), p(97, 39))
+    black: brightBg(p(30, 39), p(90, 39), p(40, 49)),
+    red: brightBg(p(31, 39), p(91, 39), p(41, 49)),
+    green: brightBg(p(32, 39), p(92, 39), p(42, 49)),
+    yellow: brightBg(p(33, 39), p(93, 39), p(43, 49)),
+    blue: brightBg(p(34, 39), p(94, 39), p(44, 49)),
+    magenta: brightBg(p(35, 39), p(95, 39), p(45, 49)),
+    cyan: brightBg(p(36, 39), p(96, 39), p(46, 49)),
+    white: brightBg(p(37, 39), p(97, 39), p(47, 49))
 };
 
 module.exports = {
