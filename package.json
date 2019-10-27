@@ -12,6 +12,7 @@
   ],
   "dependencies": {
     "lodash": "^4.17.15",
-    "strip-ansi": "^5.2.0"
+    "strip-ansi": "^5.2.0",
+    "supports-color": "^7.1.0"
   }
 }

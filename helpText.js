@@ -1,6 +1,5 @@
 const _flatten = require('lodash/flatten');
 const _max = require('lodash/max');
-const stripAnsi = require('strip-ansi');
 const { style, styles } = require('.');
 const { bold, underline, green, cyan } = styles;
 
@@ -127,14 +126,14 @@ class HelpTextMaker {
 
     get endDict() {
         this._mode = null;
-        let maxKeyLength = _max(this._dictText.filter(d => d.mode == 'key').map(d => stripAnsi(d.text.join('')).length));
+        let maxKeyLength = _max(this._dictText.filter(d => d.mode == 'key').map(d => style.len(d.text.join(''))));
         let valueWrapIndent = maxKeyLength + 4;
         this._dictText.forEach(d => {
             if(d.mode === 'value') {
                 this.pushWrap(valueWrapIndent).tab.text(d.text).popWrap();
             } else if(d.mode === 'key') {
                 this.text(d.text);
-                let len = stripAnsi(d.text.join('')).length;
+                let len = style.len(d.text.join(''));
                 if(len < maxKeyLength) {
                     this.text(' '.repeat(maxKeyLength - len));
                 }
@@ -167,11 +166,11 @@ class HelpTextMaker {
                     let wrappedLines = [[]];
                     words.forEach(w => {
                         let line = _peek(wrappedLines);
-                        let lineLength = stripAnsi(line.join(' ')).length;
+                        let lineLength = style.len(line.join(' '));
                         if(wrappedLines.length == 1) {
                             lineLength += lastLineLength;
                         }
-                        let wordLength = stripAnsi(w).length;
+                        let wordLength = style.len(w);
                         if(lineLength + wordLength + 1 > wrap) {
                             line = [];
                             for(let i = 0; i < t.wrapIndent; i++) {
@@ -181,11 +180,11 @@ class HelpTextMaker {
                         }
                         line.push(w);
                     });
-                    lastLineLength = stripAnsi(wrappedLines.map(l => l.join(' '))).length;
+                    lastLineLength = style.len(wrappedLines.map(l => l.join(' ')));
                     return wrappedLines.map(l => l.join(' ')).join('\n');
                 }).join('\n').split(/\n/);
             }
-            lastLineLength = stripAnsi(_peek(lines)).length;
+            lastLineLength = style.len(_peek(lines));
             return lines.join('\n');
         }).join('');
     }
