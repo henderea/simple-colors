@@ -1,6 +1,8 @@
 const _uniq = require('lodash/uniq');
 const _flatten = require('lodash/flatten');
 const _repeat = require('lodash/repeat');
+const _stringSize = require('lodash/_stringSize');
+const _createPadding = require('lodash/_createPadding');
 const _isFunc = require('lodash/isFunction');
 const _isObj = require('lodash/isPlainObject');
 const _isNum = require('lodash/isNumber');
@@ -27,7 +29,32 @@ style.force = (force = true) => { useFormat.force = force; };
 style.forced = () => useFormat.force;
 style.enabled = () => useFormat();
 style.clean = (str) => str && stripAnsi(str);
-style.len = (str) => str ? style.clean(str).length : 0;
+style.len = (str) => str ? _stringSize(style.clean(str)) : 0;
+style.pad = (string, length = 0, chars = ' ') => {
+    const strLength = length ? style.len(string) : 0;
+    if(!length || length <= strLength) {
+        return string || '';
+    }
+    const startLength = Math.floor((length - strLength) / 2);
+    const endLength = length - strLength - startLength;
+    return `${_createPadding(startLength, chars)}${string}${_createPadding(endLength, chars)}`;
+};
+style.padStart = (string, length = 0, chars = ' ') => {
+    const strLength = length ? style.len(string) : 0;
+    if(!length || length <= strLength) {
+        return string || '';
+    }
+    const startLength = length - strLength;
+    return `${_createPadding(startLength, chars)}${string}`;
+};
+style.padEnd = (string, length = 0, chars = ' ') => {
+    const strLength = length ? style.len(string) : 0;
+    if(!length || length <= strLength) {
+        return string || '';
+    }
+    const endLength = length - strLength;
+    return `${string}${_createPadding(endLength, chars)}`;
+};
 
 const brightBg = (normal, bright, bg) => {
     let sty = style(normal);
@@ -91,7 +118,7 @@ const applyBorder = (str, bold, dim, thick) => {
     const topBorder = stylize(`${chars.topLeft}${_repeat(chars.horizontal, len + 2)}${chars.topRight}`);
     const bottomBorder = stylize(`${chars.bottomLeft}${_repeat(chars.horizontal, len + 2)}${chars.bottomRight}`);
     const side = stylize(chars.vertical);
-    const middle = _flatten([str]).map(l => `${side} ${l} ${side}`).join('\n');
+    const middle = _flatten([str]).map(l => `${side} ${style.padEnd(l, len)} ${side}`).join('\n');
     return `${topBorder}\n${middle}\n${bottomBorder}`;
 }
 
