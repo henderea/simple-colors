@@ -2,13 +2,14 @@
   "name": "@henderea/simple-colors",
   "version": "1.3.6",
   "description": "A simple ANSI escape library for text formatting",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "./index.js",
+  "types": "./index.d.ts",
   "repository": "git@github.com:henderea/simple-colors.git",
   "author": "Eric Henderson <henderea@gmail.com>",
   "license": "MIT",
   "files": [
     "index.js",
+    "index.d.ts",
     "helpText.js"
   ],
   "dependencies": {

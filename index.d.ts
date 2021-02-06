@@ -1,4 +1,4 @@
-declare interface BorderMaker {
+export declare interface BorderMaker {
     (str: string): string;
 
     readonly bold: BorderMaker;
@@ -9,21 +9,21 @@ declare interface BorderMaker {
     readonly thin: BorderMaker;
 }
 
-declare function borderMaker(bold?: boolean, dim?: boolean, thick?: boolean): BorderMaker;
-declare const border: BorderMaker;
+export declare function borderMaker(bold?: boolean, dim?: boolean, thick?: boolean): BorderMaker;
+export declare const border: BorderMaker;
 
-declare type StyleFunction = (str: string) => string;
-declare interface ColorStyleFunction {
+export declare type StyleFunction = (str: string) => string;
+export declare interface ColorStyleFunction {
     (str: string): string;
     bright(str: string): string;
     bg(str: string): string;
 }
 
-declare type StyleDef = {
+export declare type StyleDef = {
     o: number,
     c: number
 }
-declare interface Style {
+export declare interface Style {
     (...sty: Array<StyleFunction | StyleDef>): StyleFunction;
 
     force(force?: boolean): void;
@@ -36,9 +36,9 @@ declare interface Style {
     padEnd(str: string | null | undefined, length?: number, chars?: string): string;
 }
 
-declare const style: Style;
+export declare const style: Style;
 
-declare interface Styles {
+export declare interface Styles {
     bold: StyleFunction;
     dim: StyleFunction;
     italic: StyleFunction;
@@ -53,11 +53,4 @@ declare interface Styles {
     white: ColorStyleFunction;
 }
 
-declare const styles: Styles
-
-export = {
-    borderMaker,
-    border,
-    style,
-    styles
-}
+export declare const styles: Styles;
