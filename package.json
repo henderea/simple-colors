@@ -1,6 +1,6 @@
 {
   "name": "@henderea/simple-colors",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "description": "A simple ANSI escape library for text formatting",
   "main": "./index.js",
   "types": "./index.d.ts",
