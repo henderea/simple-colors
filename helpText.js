@@ -175,10 +175,8 @@ class HelpTextMaker {
     get endList() {
         this._mode = null;
         let maxLiLength = _max(this._bufferText.filter(d => d.mode == 'uli' || d.mode == 'oli').map(d => style.len(d.text.join(''))));
-        console.log(maxLiLength);
         this._bufferText.forEach(d => {
             if(d.mode === 'uli') {
-                console.log(d.curIndent);
                 this.pushWrap(maxLiLength + d.curIndent + 1).text(style.padEnd(d.text.join(''), maxLiLength)).space.popWrap();
             } else if(d.mode === 'oli') {
                 this.pushWrap(maxLiLength + d.curIndent + 2).text(style.padStart(d.text.join(''), maxLiLength)).text(')').space.popWrap();
