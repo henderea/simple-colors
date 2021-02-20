@@ -16,9 +16,12 @@ class HelpTextMaker {
         this._name = name;
         this._mode = null;
         this._text = []
-        this._dictText = [];
+        this._bufferText = [];
         this._wrap = false;
         this._wrapIndent = [0];
+        this._counter = 0;
+        this._curIndent = 0;
+        this._inMargin = true;
     }
 
     pushWrap(wrapIndent = 0) {
@@ -41,15 +44,11 @@ class HelpTextMaker {
     text(...text) {
         text = _flatten(text);
         if(this._mode) {
-            if(this._mode == 'wrap') {
-                this._wrapper.push(text);
+            let peek = _peek(this._bufferText);
+            if(peek && peek.mode == this._mode) {
+                _pushAll(peek.text, text);
             } else {
-                let peek = _peek(this._dictText);
-                if(peek && peek.mode == this._mode) {
-                    _pushAll(peek.text, text);
-                } else {
-                    this._dictText.push({ mode: this._mode, text: text });
-                }
+                this._bufferText.push({ mode: this._mode, text: text, curIndent: this._curIndent });
             }
         } else {
             let wrapIndent = _peek(this._wrapIndent);
@@ -59,6 +58,14 @@ class HelpTextMaker {
             } else {
                 this._text.push({ wrapIndent, text: text });
             }
+        }
+        if(text.join('') == '\n') {
+            this._inMargin = true;
+            this._curIndent = 0;
+        } else if(/^ +$/.test(text.join('')) && this._inMargin) {
+            this._curIndent += text.join('').length;
+        } else {
+            this._inMargin = false;
         }
         return this;
     }
@@ -120,15 +127,24 @@ class HelpTextMaker {
     }
 
     get end() {
-        this._mode = 'dict';
+        if(this._mode == 'key' || this._mode == 'value') {
+            this._mode = 'dict';
+            return this;
+        }
+        if(this._mode == 'dict') {
+            return this.endDict;
+        }
+        if(this._mode == 'ul' || this._mode == 'ol') {
+            return this.endList;
+        }
         return this;
     }
 
     get endDict() {
         this._mode = null;
-        let maxKeyLength = _max(this._dictText.filter(d => d.mode == 'key').map(d => style.len(d.text.join(''))));
+        let maxKeyLength = _max(this._bufferText.filter(d => d.mode == 'key').map(d => style.len(d.text.join(''))));
         let valueWrapIndent = maxKeyLength + 4;
-        this._dictText.forEach(d => {
+        this._bufferText.forEach(d => {
             if(d.mode === 'value') {
                 this.pushWrap(valueWrapIndent).tab.text(d.text).popWrap();
             } else if(d.mode === 'key') {
@@ -141,7 +157,59 @@ class HelpTextMaker {
                 this.text(d.text);
             }
         });
-        this._dictText = [];
+        this._bufferText = [];
+        return this;
+    }
+
+    get ul() {
+        this._mode = 'ul';
+        return this;
+    }
+
+    get ol() {
+        this._mode = 'ol';
+        this._counter = 0;
+        return this;
+    }
+
+    get endList() {
+        this._mode = null;
+        let maxLiLength = _max(this._bufferText.filter(d => d.mode == 'uli' || d.mode == 'oli').map(d => style.len(d.text.join(''))));
+        this._bufferText.forEach(d => {
+            if(d.mode === 'uli') {
+                this.pushWrap(maxLiLength + d.curIndent + 1).text(style.padEnd(d.text.join(''), maxLiLength)).space.popWrap();
+            } else if(d.mode === 'oli') {
+                this.pushWrap(maxLiLength + d.curIndent + 2).text(style.padStart(d.text.join(''), maxLiLength)).text(')').space.popWrap();
+            } else {
+                this.pushWrap(maxLiLength + d.curIndent).text(d.text.join('')).popWrap();
+            }
+        });
+        this._bufferText = [];
+        return this;
+    }
+
+    get endUl() {
+        return this.endList;
+    }
+
+    get endOl() {
+        return this.endList;
+    }
+
+    get li() {
+        if(this._mode == 'ul') {
+            this._mode = 'uli';
+            this.bold('\u2022');
+            this._mode = 'ul';
+            return this;
+        }
+        if(this._mode == 'ol') {
+            this._counter++;
+            this._mode = 'oli'
+            this.bold(`${this._counter}`);
+            this._mode = 'ol';
+            return this;
+        }
         return this;
     }
 
