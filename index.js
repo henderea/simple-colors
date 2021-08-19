@@ -76,7 +76,12 @@ const styles = {
     blue: brightBg(p(34, 39), p(94, 39), p(44, 49)),
     magenta: brightBg(p(35, 39), p(95, 39), p(45, 49)),
     cyan: brightBg(p(36, 39), p(96, 39), p(46, 49)),
-    white: brightBg(p(37, 39), p(97, 39), p(47, 49))
+    white: brightBg(p(37, 39), p(97, 39), p(47, 49)),
+    customColor(num) {
+        let sty = style(p(`38;5;${num}`, 39));
+        sty.bg = style(p(`48;5;${num}`, 49));
+        return sty;
+    }
 };
 
 

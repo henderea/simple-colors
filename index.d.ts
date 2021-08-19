@@ -18,10 +18,14 @@ export declare interface ColorStyleFunction {
     bright(str: string): string;
     bg(str: string): string;
 }
+export declare interface CustomColorStyleFunction {
+    (str: string): string;
+    bg(str: string): string;
+}
 
 export declare type StyleDef = {
-    o: number,
-    c: number
+    o: number | string,
+    c: number | string
 }
 export declare interface Style {
     (...sty: Array<StyleFunction | StyleDef>): StyleFunction;
@@ -51,6 +55,7 @@ export declare interface Styles {
     magenta: ColorStyleFunction;
     cyan: ColorStyleFunction;
     white: ColorStyleFunction;
+    customColor(num: number): CustomColorStyleFunction;
 }
 
 export declare const styles: Styles;
