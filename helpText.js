@@ -1,7 +1,7 @@
 import _flatten from 'lodash/flatten.js';
 import _max from 'lodash/max.js';
 
-const { style, styles } = require('.');
+import { style, styles } from './index.js';
 const { bold, underline, green, cyan } = styles;
 
 const _peek = (array) => array[array.length - 1];
