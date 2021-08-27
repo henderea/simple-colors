@@ -249,7 +249,7 @@ class HelpTextMaker {
             }
             line.push(w);
           });
-          lastLineLength = style.len(wrappedLines.map((l) => l.join(' ')));
+          lastLineLength = style.len(_peek(wrappedLines).join(' '));
           return wrappedLines.map((l) => l.join(' ')).join('\n');
         }).join('\n').split(/\n/);
       }
