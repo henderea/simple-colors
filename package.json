@@ -7,6 +7,10 @@
   "repository": "git@github.com:henderea/simple-colors.git",
   "author": "Eric Henderson <henderea@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "lint": "eslint index.js helpText.js",
+    "lint:fix": "eslint --fix index.js helpText.js"
+  },
   "files": [
     "index.js",
     "index.d.ts",
@@ -16,5 +20,15 @@
     "lodash": "^4.17.21",
     "strip-ansi": "^6.0.0",
     "supports-color": "^8.1.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/eslint-parser": "^7.15.0",
+    "eslint": "^7.32.0",
+    "eslint-config-henderea": "1.0.6",
+    "eslint-plugin-import": "^2.24.1"
+  },
+  "eslintConfig": {
+    "extends": "henderea"
   }
 }
