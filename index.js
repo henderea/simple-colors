@@ -1,14 +1,15 @@
-const _uniq = require('lodash/uniq');
-const _flatten = require('lodash/flatten');
-const _repeat = require('lodash/repeat');
-const _stringSize = require('lodash/_stringSize');
-const _createPadding = require('lodash/_createPadding');
-const _isFunc = require('lodash/isFunction');
-const _isObj = require('lodash/isPlainObject');
-const _isNum = require('lodash/isNumber');
-const _isStr = require('lodash/isString');
-const supportsColor = require('supports-color');
-const stripAnsi = require('strip-ansi');
+import supportsColor from 'supports-color';
+import stripAnsi from 'strip-ansi';
+
+import _uniq from 'lodash/uniq.js';
+import _flatten from 'lodash/flatten.js';
+import _repeat from 'lodash/repeat.js';
+import _stringSize from 'lodash/_stringSize.js';
+import _createPadding from 'lodash/_createPadding.js';
+import _isFunc from 'lodash/isFunction.js';
+import _isObj from 'lodash/isPlainObject.js';
+import _isNum from 'lodash/isNumber.js';
+import _isStr from 'lodash/isString.js';
 
 const _isNumOrStr = (v) => _isNum(v) || _isStr(v);
 
@@ -156,7 +157,7 @@ const borderMaker = (bold = false, dim = false, thick = false) => {
 
 const border = borderMaker();
 
-module.exports = {
+export {
   style,
   styles,
   borderMaker,

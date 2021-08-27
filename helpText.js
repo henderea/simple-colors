@@ -1,5 +1,6 @@
-const _flatten = require('lodash/flatten');
-const _max = require('lodash/max');
+import _flatten from 'lodash/flatten.js';
+import _max from 'lodash/max.js';
+
 const { style, styles } = require('.');
 const { bold, underline, green, cyan } = styles;
 
@@ -258,7 +259,7 @@ class HelpTextMaker {
   }
 }
 
-module.exports = {
+export {
   HelpTextMaker,
   style,
   styles
