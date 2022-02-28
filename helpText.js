@@ -178,9 +178,9 @@ class HelpTextMaker {
     let maxLiLength = _max(this._bufferText.filter((d) => d.mode == 'uli' || d.mode == 'oli').map((d) => style.len(d.text.join(''))));
     this._bufferText.forEach((d) => {
       if(d.mode === 'uli') {
-        this.pushWrap(maxLiLength + d.curIndent + 1).text(style.padEnd(d.text.join(''), maxLiLength)).space.popWrap();
+        this.text(style.padEnd(d.text.join(''), maxLiLength)).space;
       } else if(d.mode === 'oli') {
-        this.pushWrap(maxLiLength + d.curIndent + 2).text(style.padStart(d.text.join(''), maxLiLength)).text(')').space.popWrap();
+        this.text(style.padStart(d.text.join(''), maxLiLength)).text(')').space;
       } else {
         this.pushWrap(maxLiLength + d.curIndent + (d.mode == 'ol' ? 2 : 1)).text(d.text.join('')).popWrap();
       }
