@@ -20,7 +20,7 @@
   "dependencies": {
     "lodash": "^4.17.21",
     "strip-ansi": "^7.0.1",
-    "supports-color": "^9.2.1"
+    "supports-color": "^9.3.1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.58.0",
