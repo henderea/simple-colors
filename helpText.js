@@ -5,12 +5,6 @@ import { style, styles } from './index.js';
 const { bold, underline, green, cyan } = styles;
 
 const _peek = (array) => array[array.length - 1];
-const _pushAll = (array, ...args) => {
-  _flatten(args).forEach((arg) => {
-    array.push(arg);
-  });
-  return array;
-};
 
 class HelpTextMaker {
   constructor(name) {
@@ -47,7 +41,7 @@ class HelpTextMaker {
     if(this._mode) {
       let peek = _peek(this._bufferText);
       if(peek && peek.mode == this._mode) {
-        _pushAll(peek.text, text);
+        peek.text.push(...text);
       } else {
         this._bufferText.push({ mode: this._mode, text: text, curIndent: this._curIndent });
       }
@@ -55,7 +49,7 @@ class HelpTextMaker {
       let wrapIndent = _peek(this._wrapIndent);
       let peek = _peek(this._text);
       if(peek && peek.wrapIndent == wrapIndent) {
-        _pushAll(peek.text, text);
+        peek.text.push(...text);
       } else {
         this._text.push({ wrapIndent, text: text });
       }
