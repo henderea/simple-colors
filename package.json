@@ -14,7 +14,8 @@
   "files": [
     "index.js",
     "index.d.ts",
-    "helpText.js"
+    "helpText.js",
+    "helpText.d.ts"
   ],
   "dependencies": {
     "lodash": "^4.17.21"
