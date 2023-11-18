@@ -1,5 +1,4 @@
-import supportsColor from 'supports-color';
-import stripAnsi from 'strip-ansi';
+import tty from 'tty';
 
 import _uniq from 'lodash/uniq.js';
 import _flatten from 'lodash/flatten.js';
@@ -10,6 +9,82 @@ import _isFunc from 'lodash/isFunction.js';
 import _isObj from 'lodash/isPlainObject.js';
 import _isNum from 'lodash/isNumber.js';
 import _isStr from 'lodash/isString.js';
+
+//#region stripAnsi
+function makeAnsiRegex() {
+  const pattern = [
+    '[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)',
+    '(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-nq-uy=><~]))'
+  ].join('|');
+  return new RegExp(pattern, 'g');
+}
+
+const ansiRegex = makeAnsiRegex();
+
+function stripAnsi(text) {
+  if(typeof text !== 'string') {
+    throw new TypeError(`Expected a \`string\`, got \`${typeof text}\``);
+  }
+
+  return text.replace(ansiRegex, '');
+}
+//#endregion
+
+//#region supportsColor
+function getColorLevel(isTty) {
+  if(!isTty) {
+    return 0;
+  }
+  const term = process.env.TERM;
+  if(term === 'dumb') {
+    return 0;
+  }
+
+  if(process.env.COLORTERM === 'truecolor' || term === 'xterm-kitty') {
+    return 3;
+  }
+
+  if('TERM_PROGRAM' in process.env) {
+    const version = Number.parseInt((process.env.TERM_PROGRAM_VERSION || '').split('.')[0], 10);
+    switch(process.env.TERM_PROGRAM) {
+      case 'iTerm.app': return version >= 3 ? 3 : 2;
+      case 'Apple_Terminal': return 2;
+    }
+  }
+
+  if(/-256(color)?$/i.test(term)) {
+    return 2;
+  }
+
+  if(/^screen|^xterm|^vt100|^vt220|^rxvt|color|ansi|cygwin|linux/i.test(term)) {
+    return 1;
+  }
+
+  if('COLORTERM' in process.env) {
+    return 1;
+  }
+
+  return 0;
+}
+
+function translateLevel(level) {
+  if(level === 0) {
+    return false;
+  }
+
+  return {
+    level,
+    hasBasic: true,
+    has256: level >= 2,
+    has16m: level >= 3
+  };
+}
+
+const supportsColor = {
+  stdout: translateLevel(getColorLevel(tty.isatty(1))),
+  stderr: translateLevel(getColorLevel(tty.isatty(2)))
+};
+//#endregion
 
 const _isNumOrStr = (v) => _isNum(v) || _isStr(v);
 
@@ -158,6 +233,8 @@ const borderMaker = (bold = false, dim = false, thick = false) => {
 const border = borderMaker();
 
 export {
+  stripAnsi,
+  supportsColor,
   style,
   styles,
   borderMaker,

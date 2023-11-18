@@ -18,9 +18,7 @@
     "helpText.js"
   ],
   "dependencies": {
-    "lodash": "^4.17.21",
-    "strip-ansi": "^7.1.0",
-    "supports-color": "^9.4.0"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.7.3",

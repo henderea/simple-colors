@@ -26,7 +26,7 @@ export declare interface CustomColorStyleFunction {
 export declare type StyleDef = {
     o: number | string,
     c: number | string
-}
+};
 export declare interface Style {
     (...sty: Array<StyleFunction | StyleDef>): StyleFunction;
 
@@ -59,3 +59,29 @@ export declare interface Styles {
 }
 
 export declare const styles: Styles;
+
+export declare function stripAnsi(text: string): string;
+
+export declare type ColorSupport = false | {
+  level: 1,
+  hasBasic: true,
+  has256: false,
+  has16m: false
+} | {
+  level: 2,
+  hasBasic: true,
+  has256: true,
+  has16m: false
+} | {
+  level: 3,
+  hasBasic: true,
+  has256: true,
+  has16m: true
+};
+
+export declare interface SupportsColor {
+  stdout: ColorSupport;
+  stderr: ColorSupport;
+}
+
+export declare const supportsColor: SupportsColor;
