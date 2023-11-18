@@ -1,7 +1,7 @@
 const _flatten = require('lodash/flatten');
 const _max = require('lodash/max');
 
-const { style, styles } = require('./index');
+const { style, styles, stripAnsi } = require('./index');
 const { bold, underline, green, cyan } = styles;
 
 const _peek = (array) => array[array.length - 1];
@@ -256,5 +256,6 @@ class HelpTextMaker {
 module.exports = {
   HelpTextMaker,
   style,
-  styles
+  styles,
+  stripAnsi
 };
