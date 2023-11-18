@@ -7,7 +7,6 @@
   "repository": "git@github.com:henderea/simple-colors.git",
   "author": "Eric Henderson <henderea@gmail.com>",
   "license": "MIT",
-  "type": "module",
   "scripts": {
     "lint": "eslint index.js helpText.js",
     "lint:fix": "eslint --fix index.js helpText.js"
